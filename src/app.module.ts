@@ -5,6 +5,7 @@ import { envs } from './config/envs';
 import { EmailModule } from './email/email.module';
 import { Report } from './reports/entities/report.entity';
 import { ReportsModule } from './reports/reports.module';
+import { StorageModule } from './storage/storage.module';
 import { User } from './users/entities/user.entity';
 import { UsersModule } from './users/users.module';
 
@@ -20,8 +21,13 @@ import { UsersModule } from './users/users.module';
       entities: [Report, User],
       synchronize: false, // Las tablas se gestionan solo con migraciones
       autoLoadEntities: true,
+      // Al arrancar se ejecutan las migraciones pendientes (dist/migrations/*.js),
+      // así el contenedor de Docker crea/actualiza las tablas por sí solo.
+      migrations: [__dirname + '/migrations/*{.ts,.js}'],
+      migrationsRun: true,
     }),
     EmailModule,
+    StorageModule,
     ReportsModule,
     UsersModule,
     AuthModule,

@@ -22,6 +22,14 @@ export class Report {
   @Column({ type: 'boolean', default: false, name: 'is_resolved' })
   isResolved: boolean;
 
+  // URL pública (S3) de la foto de la fuga que adjunta el ciudadano
+  @Column({ type: 'varchar', name: 'photo_url', nullable: true })
+  photoUrl: string;
+
+  // URL pública (S3) de la foto de la reparación que sube la cuadrilla
+  @Column({ type: 'varchar', name: 'repair_photo_url', nullable: true })
+  repairPhotoUrl: string | null;
+
   @CreateDateColumn({ type: 'timestamp', name: 'created_at' })
   createdAt: Date;
 }

@@ -1,4 +1,4 @@
-import { Report } from '../entities/report.entity';
+import { CreateReportDto } from '../dto/create-report.dto';
 
 const SEVERITY_LABELS: Record<string, string> = {
   low: 'Baja',
@@ -14,9 +14,10 @@ const SEVERITY_COLORS: Record<string, string> = {
 
 /**
  * Genera el HTML del correo de aviso enviado a la cuadrilla de mantenimiento
- * cuando un ciudadano crea un nuevo reporte de fuga de agua.
+ * cuando un ciudadano crea un nuevo reporte de fuga de agua. Incluye la foto
+ * de la fuga (URL pública de S3) dentro del correo con una etiqueta <img>.
  */
-export function generateReportTemplate(dto: Report): string {
+export function generateReportTemplate(dto: CreateReportDto, photoUrl: string): string {
   const severityLabel = SEVERITY_LABELS[dto.severity] ?? dto.severity;
   const severityColor = SEVERITY_COLORS[dto.severity] ?? '#455a64';
 
@@ -45,6 +46,18 @@ export function generateReportTemplate(dto: Report): string {
                     Se ha registrado un nuevo reporte ciudadano de fuga de agua en la vía pública.
                     A continuación los detalles:
                   </p>
+
+                  <p style="font-size:13px; font-weight:bold; color:#555555; margin:0 0 8px 0;">
+                    Foto de la fuga
+                  </p>
+                  <a href="${photoUrl}" target="_blank" style="text-decoration:none;">
+                    <img
+                      src="${photoUrl}"
+                      alt="Foto de la fuga reportada en ${dto.address}"
+                      width="552"
+                      style="display:block; width:100%; max-width:552px; height:auto; border-radius:6px; border:1px solid #e0e0e0;"
+                    />
+                  </a>
 
                   <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-collapse: collapse; margin-top:16px;">
                     <tr>

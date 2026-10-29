@@ -1,0 +1,21 @@
+# Secretos y configuración local: NUNCA dentro de la imagen
+.env
+.env.*
+compose.yaml
+docker-compose.yml
+
+# Dependencias y compilados (se generan dentro de la imagen)
+node_modules
+dist
+
+# Git, CI y archivos que no necesita la API
+.git
+.gitignore
+.github
+.dockerignore
+Dockerfile
+README.md
+*.log
+coverage
+.vscode
+.idea

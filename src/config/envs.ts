@@ -17,4 +17,10 @@ export const envs = {
   MAIL_FROM: env.get('MAIL_FROM').required().asString(),
 
   MAINTENANCE_CREW_EMAIL: env.get('MAINTENANCE_CREW_EMAIL').required().asString(),
+
+  // AWS S3 (fotos de las fugas)
+  AWS_REGION: env.get('AWS_REGION').required().asString(),
+  AWS_ACCESS_KEY_ID: env.get('AWS_ACCESS_KEY_ID').required().asString(),
+  AWS_SECRET_ACCESS_KEY: env.get('AWS_SECRET_ACCESS_KEY').required().asString(),
+  AWS_BUCKET_NAME: env.get('AWS_BUCKET_NAME').required().asString(),
 };

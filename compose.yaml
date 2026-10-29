@@ -1,0 +1,45 @@
+# Levanta la API (imagen publicada en Docker Hub) junto con PostgreSQL.
+# Uso:
+#   1. cp .env.example .env   y llena tus datos reales (DOCKER_USER, correo, AWS...)
+#   2. docker compose pull
+#   3. docker compose up -d
+# Las credenciales viven solo en .env (no se suben a Git ni a la imagen).
+
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: aguafix-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    ports:
+      - '5433:5432' # 5433 en tu PC para no chocar con un PostgreSQL local
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U ${DB_USERNAME} -d ${DB_NAME}']
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  api:
+    image: ${DOCKER_USER}/water-leaks-api:latest
+    container_name: aguafix-api
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      # Dentro de la red de compose la base de datos se llama "db"
+      DB_HOST: db
+      DB_PORT: 5432
+      PORT: 3000
+    ports:
+      - '3000:3000'
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  pgdata:

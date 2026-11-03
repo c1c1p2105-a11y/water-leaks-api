@@ -15,7 +15,7 @@ async function bootstrap() {
   );
 
   await app.listen(envs.PORT);
-  console.log(`🚀 API de reportes de fugas de agua corriendo en el puerto ${envs.PORT}`);
+  console.log(`🚀 AguaFix: API con fotos en S3 lista en el puerto ${envs.PORT}`);
 }
 
 bootstrap();
